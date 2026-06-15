@@ -64,13 +64,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-_html = build_html()
+import streamlit.components.v1 as components
 
-# st.iframe (Streamlit recente) ajusta a altura ao conteúdo automaticamente.
-# Fallback para a API antiga em versões anteriores.
-if hasattr(st, "iframe"):
-    st.iframe(_html, width="stretch", height="content")
-else:
-    import streamlit.components.v1 as components
-
-    components.html(_html, height=6000, scrolling=True)
+# Altura fixa e generosa com rolagem interna. Usamos components.html (e não
+# st.iframe com height="content") porque, com HTML embutido via srcdoc, o
+# Streamlit não consegue medir a altura e o quadro colapsa (site não aparece).
+components.html(build_html(), height=5200, scrolling=True)
